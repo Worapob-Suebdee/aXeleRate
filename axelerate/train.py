@@ -38,6 +38,7 @@ def train_from_config(config,project_folder):
         input_size = [config['model']['input_size'],config['model']['input_size']]
     if "converter" not in config:
         config["converter"] = {}
+    if "type" not in config["converter"]:
         config["converter"]["type"] = "k210"
     # Create the converter
     converter = Converter(config['converter']['type'], config['model']['architecture'],
