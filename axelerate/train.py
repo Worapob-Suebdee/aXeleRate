@@ -73,9 +73,7 @@ def train_from_config(config,project_folder):
     #  Classifier
     if config['model']['type']=='Classifier':
         print('Classifier')
-        if "labels" not in config["model"]:
-
-        if "labels" not config["model"]:
+        if config['model']['labels']:
             labels = config['model']['labels']
         else:
             labels = get_labels(config['train']['train_image_folder'])
