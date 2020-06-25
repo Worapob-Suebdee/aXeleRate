@@ -36,7 +36,9 @@ def train_from_config(config,project_folder):
         input_size = config['model']['input_size'][:]
     except:
         input_size = [config['model']['input_size'],config['model']['input_size']]
-
+    if "converter" not in config:
+        config["converter"] = {}
+        config["converter"]["type"] = "k210"
     # Create the converter
     converter = Converter(config['converter']['type'], config['model']['architecture'],
                           input_size, config['train']['valid_image_folder'])
@@ -140,7 +142,7 @@ def train_from_config(config,project_folder):
                                            config['train']['first_trainable_layer'],
                                            config['train']['valid_metric'])
     # 4 Convert the model
-    converter.convert_model(model_path,model_layers,config['converter']['valid_dataset_folder'])    
+    converter.convert_model(model_path,model_layers,config['converter']['convert_dataset_folder'])    
     return model_path
 
 def setup_training(config_file=None,config_dict=None):
