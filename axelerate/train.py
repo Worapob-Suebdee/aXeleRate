@@ -38,7 +38,7 @@ def train_from_config(config,project_folder):
         input_size = [config['model']['input_size'],config['model']['input_size']]
 
     # Create the converter
-    converter = Converter(config['converter']['type'], config['model']['architecture'], config['train']['valid_image_folder'])
+    converter = Converter(config['converter']['type'], config['model']['architecture'], config['converter']['convert_dataset_folder'])
 
     #  Segmentation network
     if config['model']['type']=='SegNet':
