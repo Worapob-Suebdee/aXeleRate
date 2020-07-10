@@ -16,7 +16,7 @@ import tensorflow as tf
 
 tf.get_logger().setLevel('ERROR')
 
-gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=1.0)
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=1)
 config = tf.ConfigProto(gpu_options=gpu_options)
 config.gpu_options.allow_growth = True
 session = tf.Session(config=config)
@@ -36,13 +36,9 @@ def train_from_config(config,project_folder):
         input_size = config['model']['input_size'][:]
     except:
         input_size = [config['model']['input_size'],config['model']['input_size']]
-    if "converter" not in config:
-        config["converter"] = {}
-    if "type" not in config["converter"]:
-        config["converter"]["type"] = "k210"
+
     # Create the converter
-    converter = Converter(config['converter']['type'], config['model']['architecture'],
-                          input_size, config['train']['valid_image_folder'])
+    converter = Converter(config['converter']['type'], config['model']['architecture'], config['train']['valid_image_folder'])
 
     #  Segmentation network
     if config['model']['type']=='SegNet':
@@ -72,7 +68,7 @@ def train_from_config(config,project_folder):
                
     #  Classifier
     if config['model']['type']=='Classifier':
-        print('Classifier')
+        print('Classifier')           
         if config['model']['labels']:
             labels = config['model']['labels']
         else:
@@ -143,7 +139,7 @@ def train_from_config(config,project_folder):
                                            config['train']['first_trainable_layer'],
                                            config['train']['valid_metric'])
     # 4 Convert the model
-    converter.convert_model(model_path,model_layers,config['converter']['convert_dataset_folder'])    
+    converter.convert_model(model_path)    
     return model_path
 
 def setup_training(config_file=None,config_dict=None):
